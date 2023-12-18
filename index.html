@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+<meta
+  name="viewport"
+  content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+/>
+<script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.1.0/dist/aframe-extras.min.js"></script>
+<script>
+  AFRAME.registerComponent("cursor-interaction", {
+    init: function () {
+      var linkedIn = document.querySelector("#link");
+      linkedIn.addEventListener("click", function (evt) {
+        window.open("https://www.linkedin.com/company/nuxr/", "_blank");
+      });
+
+      var videocontroller = document.querySelector("#videocontroller");
+      var vidr = document.querySelector("#vidb");
+      videocontroller.addEventListener("click", function (evt) {
+        console.log("videocontroller clicked");
+
+        if (!vidr.paused) {
+          vidr.pause();
+
+          vidr.muted = true;
+          videocontroller.setAttribute("material", "src", "#my-playr");
+        } else {
+          vidr.play();
+
+          vidr.muted = false;
+          videocontroller.setAttribute("material", "src", "#my-pauseb");
+        }
+      });
+    },
+  });
+
+</script>
+
+<body style="margin: 0px; overflow: hidden">
+  <a-scene
+    vr-mode-ui="enabled: false;"
+    renderer="logarithmicDepthBuffer: false;"
+    embedded
+    arjs="trackingMethod: best;"
+       cursor-interaction
+  >
+    <a-assets>
+      <a-asset-item
+        id="aj"
+        src="./resources/claire.glb"
+      ></a-asset-item>
+      <img
+        id="my-link"
+        src="./resources/linkedin-icon-2048x2048-ya5g47j2.png"
+      />
+      <video
+        muted="true"
+        id="vidb"
+        loop="true"
+        preload="auto"
+        playsinline
+        webkit-playsinline
+        crossorigin="anonymous"
+        src="./resources/followtheking.mp4"
+      ></video>
+      <img
+        id="my-playr"
+        src="./resources/afb2f1da-7c92-48f3-8fdc-9e6b3ab795f8_playr.png"
+      />
+      <img
+        id="my-pauseb"
+        src="./resources/afb2f1da-7c92-48f3-8fdc-9e6b3ab795f8_pauseb.png"
+      />
+
+      <img
+        id="bg"
+        src="./resources/Firefly transparent background Jungle with full trees and bushes, as seen from far. clouds of the bl.png"
+      />
+
+      <img
+        id="floor"
+        src="./resources/Firefly top view of a dirt ground 1957.jpg"
+      />
+    </a-assets>
+
+    <a-entity camera>
+      <a-entity
+        cursor="fuse: false"
+        raycaster="objects: .clickable"
+        position="0 0 -1"
+        geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.01"
+        material="color: black; shader: flat"
+      >
+      </a-entity>
+    </a-entity>
+
+    <a-marker id="hiroMarker" preset="hiro">
+    <a-gltf-model
+        src="#aj"
+        scale="0.1 0.1 0.1"
+        animation-mixer
+      ></a-gltf-model>
+      <a-image
+        class="clickable"
+        id="link"
+        src="#my-link"
+        material="alphaTest: 0.75"
+        geometry=""
+        scale="0.12 0.12 1"
+        position="0.35 0.2 0.3"
+        rotation="-45 -45 0"
+        animation__mouseenter="property: scale; startEvents: mouseenter; easing: easeInCubic; dur: 250; to: 0.15 0.15 1"
+        animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 250; to: 0.12 0.12 1"
+      >
+      </a-image>
+
+      <a-video
+        src="#vidb"
+        width="0.5"
+        height="0.3"
+        position="0 0.1 0.3"
+        rotation="-90 0 0"
+      >
+        <a-image
+          id="videocontroller"
+          class="clickable"
+          src="#my-playr"
+          material="alphaTest: 0.5"
+          geometry=""
+          scale="0.1 0.1 1"
+          position="0 0 0.02"
+          rotation=""
+          animation__mouseenter="property: scale; startEvents: mouseenter; easing: easeInCubic; dur: 250; to: 0.13 0.13 1"
+          animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 250; to: 0.1 0.1 1"
+        >
+        </a-image>
+      </a-video>
+
+      <a-image
+        src="#bg"
+        position="0 0.5 -0.25"
+        material="alphaTest: 0.75"
+      ></a-image>
+      <a-image
+        src="#floor"
+        rotation="-90 0 0"
+        material="alphaTest: 0.75"
+      ></a-image>
+      <a-plane
+        position="0.35 0.5 0.20"
+        rotation="0 -45 0"
+        width="0.5"
+        height="0.5"
+        material="color: black; opacity: 0.5; transparent: true"
+      >
+        <a-text
+          align="center"
+          position="0 0 0.02"
+          scale="0.2 0.2 0.2"
+          color="white"
+          rotation="0 0 0"
+          value="Hi, Welcome to NuXR! 
+                 The Everything XR club!"
+        >
+        </a-text>
+      </a-plane>
+    </a-marker>
+  </a-scene>
+</body>
+</html>
